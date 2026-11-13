@@ -1,0 +1,127 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+}
+
+model AdmissionApplication {
+  id               String   @id @default(cuid())
+  referenceNumber  String   @unique
+  studentName      String
+  fatherName       String
+  dob              String
+  gender           String
+  photoUrl         String?
+  fatherContact    String
+  whatsappNumber   String
+  email            String?
+  address          String
+  previousSchool   String?
+  previousClass    String?
+  currentLevel     String?
+  department       String   // RAHMANI_ISLAMIC or WA_EDUCATION
+  admissionProgram String
+  additionalNotes  String?
+  status           String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  adminRemarks     String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model StudentActivity {
+  id            String   @id @default(cuid())
+  titleEn       String
+  titleUr       String
+  category      String   // Quran Recitation, Hifz Activities, Quran Completion Ceremonies, Classroom Activities, Science Experiments, Mathematics Activities, Sports, Annual Events
+  descriptionEn String
+  descriptionUr String
+  mediaType     String   @default("IMAGE") // IMAGE, VIDEO, YOUTUBE
+  mediaUrl      String
+  youtubeUrl    String?
+  activityDate  String?
+  featured      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
+
+model GalleryItem {
+  id         String   @id @default(cuid())
+  titleEn    String
+  titleUr    String
+  category   String   // RAHMANI_ISLAMIC, WA_EDUCATION, EVENTS, CEREMONIES, CAMPUS
+  mediaType  String   @default("PHOTO") // PHOTO, VIDEO, YOUTUBE
+  mediaUrl   String
+  youtubeUrl String?
+  captionEn  String?
+  captionUr  String?
+  createdAt  DateTime @default(now())
+}
+
+model NewsAnnouncement {
+  id          String   @id @default(cuid())
+  titleEn     String
+  titleUr     String
+  summaryEn   String
+  summaryUr   String
+  contentEn   String?
+  contentUr   String?
+  category    String   // ADMISSION, EVENT, NOTICE, ACHIEVEMENT
+  priority    String   @default("NORMAL") // URGENT, HIGH, NORMAL
+  publishedAt DateTime @default(now())
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model ParentTestimonial {
+  id                String   @id @default(cuid())
+  parentNameEn      String
+  parentNameUr      String
+  studentRelationEn String
+  studentRelationUr String
+  quoteEn           String
+  quoteUr           String
+  rating            Int      @default(5)
+  isApproved        Boolean  @default(true)
+  createdAt         DateTime @default(now())
+}
+
+model InstitutionalSetting {
+  id                  String   @id @default("settings-default")
+  institutionNameEn   String   @default("Rahmani Islamic Center & Wa Raast Education System")
+  institutionNameUr   String   @default("رحمانی اسلامک سنٹر اینڈ وا راست ایجوکیشن سسٹم")
+  phone               String   @default("+92 300 4122318 / 0300 4136938")
+  whatsapp            String   @default("+92 300 4122318")
+  email               String   @default("info@rahmanisystem.edu.pk")
+  addressEn           String   @default("Model Town, J Block, Lahore, Pakistan")
+  addressUr           String   @default("ماڈل ٹاؤن، جے بلاک، لاہور، پاکستان")
+  googleMapsEmbed     String   @default("https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3403.0123456789!2d74.3166667!3d31.4833333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzHCsDI5JzAwLjAiTiA3NMKwMTknMDAuMCJF!5e0!3m2!1sen!2s!4v1600000000000")
+  statHifzGraduates   Int      @default(185)
+  statAcademicStudents Int     @default(320)
+  statQualifiedFaculty Int     @default(28)
+  statEstablishedYear Int      @default(2014)
+  aboutVisionEn       String   @default("Quranic Education with Modern Academic Excellence. Providing an integrated learning pathway from Hifz-ul-Quran to cutting-edge science and mathematics.")
+  aboutVisionUr       String   @default("قرآنی تعلیم اور جدید تعلیمی کمال کا حسین امتزاج۔ حفظ القرآن سے لے کر جدید سائنس و ریاضیات تک جامع تعلیمی سفر۔")
+  updatedAt           DateTime @updatedAt
+}
+
+model ContactInquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String
+  subject   String
+  message   String
+  status    String   @default("UNREAD")
+  createdAt DateTime @default(now())
+}
